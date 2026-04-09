@@ -38,4 +38,30 @@ class StandardOutFormatter(logging.Formatter):
         return log_str
 
 
+class JsonFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord):
+
+        log_dl = {
+            'time': th.format_seconds_since_epoch_to_iso(record.created),
+            'logger': record.name,
+            'module': record.module,
+            'function': record.funcName,
+            'level': record.levelname,
+            'message': record.getMessage()
+        }
+
+        if hasattr(record, 'details'):
+            log_dl['details'] = record.details
+
+        if record.exc_info is not None:
+            log_dl['exception'] = self.formatException(record.exc_info)
+
+        if record.stack_info is not None:
+            log_dl['stack'] = self.formatStack(record.stack_info)
+
+        log_json = json.dumps(log_dl)
+
+        return log_json
+
+
 # %%
