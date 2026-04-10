@@ -11,5 +11,12 @@ class ConfigTestCase(unittest.TestCase):
         self.assertEqual(config_hello_str, 'Hello from config.toml!')
 
 
+    def test_config_cotains_logging_info(self):
+
+        config_keys = cfg.config.keys()
+
+        self.assertIn('logging', config_keys)
+
+
 if __name__ == '__main__':
     unittest.main()
